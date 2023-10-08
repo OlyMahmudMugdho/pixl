@@ -28,7 +28,7 @@ const Post = (props) => {
     }
 
     return (
-        <div  className="w-full h-auto flex flex-col items-center border border-gray-200  mb-5">
+        <div  className="w-full h-auto flex flex-col items-center border border-gray-200 pb-5  mb-5">
             <div className="flex gap-2 flex-row justify-start items-center w-full">
                 <div>
                     {(item.profilePic) ? <img src={item.profilePic} /> : <img src={avatar} className="w-5 md:w-8 h-1/4 rounded-full mx-2" />}
