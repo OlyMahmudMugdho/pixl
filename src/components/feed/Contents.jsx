@@ -20,14 +20,18 @@ const Contents = () => {
     const [likesLoaded, setLikesLoaded] = useState(false);
     const [fetching, setFetching] = useState(false);
 
+    const refreshToken = JSON.parse(localStorage.getItem('refreshToken'));
 
     const fetchToken = async () => {
-        const data = await fetch("http://localhost:5000/token", {
+        const data = await fetch("https://instagram-cx9j.onrender.com/token", {
+            headers : {
+                'authorization' : `Bearer ${refreshToken}`
+            },
             credentials: "include"
         })
 
         const res = await data.json();
-        const accessToken = res.accessToken;
+        const accessToken = await res.accessToken;
 
         if (await accessToken) {
             setToken(await accessToken);
@@ -35,67 +39,13 @@ const Contents = () => {
 
     }
 
-    const fetchInitial = async () => {
-        const initialData = await fetch("http://localhost:5000/posts/1", {
-            headers: {
-                "Content-Type": "application/json",
-                "authorization": `Bearer ${token}`
-            },
-            credentials: "include"
-        });
 
-        const response = await initialData.json();
-        const fetchedData = await response.data;
-        setLoaded(true)
-        if (await fetchedData) {
-            setStatus([...await fetchedData]);
-            setInitialStage(false);
-            setLoaded(true)
-        }
-    }
-
-
-    const infiniteFetch = async () => {
-
-        if ((window.innerHeight + document.documentElement.scrollTop + 1) >= document.documentElement.scrollHeight) {
-            let draft = status;
-            let prevPage = page;
-            setPage(prevPage + 1)
-            console.log(page + 1)
-            setLoaded(false)
-            console.log("fetching ", page + 1)
-            const fetched = await fetch(`http://localhost:5000/posts/${page}`, {
-                headers: {
-                    'authorization': `Bearer ${token}`,
-                    "Content-Type": "application/json"
-                },
-                credentials: 'include'
-            })
-
-            const res = await fetched.json();
-            const data = await res.data;
-
-            if (await res.data) {
-                console.log(await data, "from 72")
-                let newStatus = [];
-
-                await data.map(item => newStatus.push(item))
-                draft = [...draft, ...newStatus]
-                console.log(draft)
-                setLoaded(true)
-                return
-            }
-
-        }
-
-        setLoaded(true)
-    }
 
 
 
     const fetchStatus = async () => {
 
-        const req = await fetch(`http://localhost:5000/posts/${page}`, {
+        const req = await fetch(`https://instagram-cx9j.onrender.com/posts/${page}`, {
             headers: {
                 "authorization": `Bearer ${token}`,
                 "Content-Type": "application/json"
@@ -103,7 +53,12 @@ const Contents = () => {
             credentials: 'include'
         })
         const res = await req.json();
-        console.log(await res.data)
+        console.log(await res)
+        if(await res.end) {
+            console.log("end")
+            setLoaded(true);
+            return
+        }
         if (await res.data) {
             setStatus([...status, ...res.data])
             setLoaded(true)
@@ -125,9 +80,10 @@ const Contents = () => {
         }
     };
 
-    useEffect(() => {
-        fetchToken();
-    }, [ ])
+    useEffect(() => { 
+        console.log('fetching...')
+        fetchToken(); 
+    }, [token])
 
     useEffect(() => {
         fetchStatus();
@@ -143,7 +99,7 @@ const Contents = () => {
          const fetchAdditional = () => {
              setPage(prev => prev + 1)
      
-             fetch(`http://localhost:5000/posts/${page}`, {
+             fetch(`https://instagram-cx9j.onrender.com/posts/${page}`, {
                  headers: {
                      "authorization": `Bearer ${token}`,
                      "Content-Type": "application/json"
@@ -158,14 +114,16 @@ const Contents = () => {
          fetchAdditional()
      }, []) */
 
+     console.log(token)
+
     return (
-        <div className="flex flex-col justify-center items-center w-full py-8">
+        <div className="flex flex-col justify-center items-center w-full md:py-8">
             {(!loaded ? <Loading /> :
                 <div>
-                    {status && status.map((item, i) => (item) ?
+                    { (status.length !== 0 ) ? status.map((item, i) => (item) ?
                         <Post key={i} item={item} avatar={avatar} token={token} i={i} />
                         : null
-                    )}
+                    ) : <h1 className="text-2xl md:text-3xl py-20">Add friends to see posts</h1> }
                 </div>
             )}
 

@@ -8,7 +8,7 @@ const SuggestedSingleUser = (props) => {
 
     const follow = (event) => {
         event.preventDefault();
-        const data = fetch(`http://localhost:5000/follow/${userID}`, {
+        const data = fetch(`https://instagram-cx9j.onrender.com/follow/${userID}`, {
             headers: {
                 "authorization": `Bearer ${accessToken}`,
                 "Content-Type": "application/json"
@@ -22,7 +22,7 @@ const SuggestedSingleUser = (props) => {
 
     const unfollow = (event) => {
         event.preventDefault();
-        const data = fetch(`http://localhost:5000/unfollow/${userID}`, {
+        const data = fetch(`https://instagram-cx9j.onrender.com/unfollow/${userID}`, {
             headers: {
                 "authorization": `Bearer ${accessToken}`,
                 "Content-Type": "application/json"

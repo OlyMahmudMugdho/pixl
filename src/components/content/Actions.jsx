@@ -19,7 +19,7 @@ const Actions = (props) => {
     const [iconClass, setIconClass] = useState("text-3xl text-zinc-500");
 
     const checkLiked = (userID, postId, accessToken) => {
-        fetch(`http://localhost:5000/isliked/${userID}/${postId}`, {
+        fetch(`https://instagram-cx9j.onrender.com/isliked/${userID}/${postId}`, {
             headers: {
                 'authorization': `Bearer ${accessToken}`,
                 'Content-Type': 'application/json'
@@ -36,7 +36,7 @@ const Actions = (props) => {
 
     const like = (userID, postID) => {
 
-        fetch(`http://localhost:5000/like/${userID}/${postID}`, {
+        fetch(`https://instagram-cx9j.onrender.com/like/${userID}/${postID}`, {
             headers: {
                 'authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
@@ -50,7 +50,7 @@ const Actions = (props) => {
 
     const unlike = (userID, postID) => {
 
-        fetch(`http://localhost:5000/unlike/${userID}/${postID}`, {
+        fetch(`https://instagram-cx9j.onrender.com/unlike/${userID}/${postID}`, {
             headers: {
                 'authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'

@@ -3,6 +3,8 @@ import HomePage from "./pages/HomePage";
 import '../dist/style.css';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SignUp from "./components/forms/SignUp";
+import Profile from "./pages/Profile";
+import EditProfile from "./pages/EditProfile";
 
 function App() {
 
@@ -16,6 +18,8 @@ function App() {
           </Route>
           <Route path="home" element={<HomePage />} />
           <Route path="signup" element={<SignUp />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="profile/edit" element={<EditProfile />} />
         </Routes>
       </BrowserRouter>
     </>
