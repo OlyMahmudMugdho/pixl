@@ -15,7 +15,8 @@ const PostForm = () => {
         const formData = new FormData();
         formData.append('content', text);
 
-        const AccessToken = await fetchAccessToken('https://instagram-cx9j.onrender.com/token')
+        const AccessToken = await fetchAccessToken('https://instagram-cx9j.onrender.com/token');
+        
         console.log(await AccessToken.accessToken);
         const accessToken = await AccessToken.accessToken;
 

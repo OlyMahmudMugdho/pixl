@@ -117,7 +117,7 @@ const Contents = () => {
      console.log(token)
 
     return (
-        <div className="flex flex-col justify-center items-center w-full md:py-8">
+        <div className="flex flex-col justify-center items-center w-full py-5 md:py-8">
             {(!loaded ? <Loading /> :
                 <div>
                     { (status.length !== 0 ) ? status.map((item, i) => (item) ?
