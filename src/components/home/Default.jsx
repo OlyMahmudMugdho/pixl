@@ -15,29 +15,35 @@ const Default = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const refreshToken = JSON.parse(localStorage.getItem('refreshToken'));
+  const isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn'));
 
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
   const [serverRunning, setServerRunning] = useState(true);
 
-  useEffect(() => {
+  /* useEffect(() => {
     fetch("https://instagram-cx9j.onrender.com")
       .then(res => res.json())
       .then(data => (data.success) ? setServerRunning(true) : setServerRunning(false))
-  }, [serverRunning])
+  }, [serverRunning]) */
 
-  useEffect(() => {
+ /*  useEffect(() => {
     fetch("https://instagram-cx9j.onrender.com/token", {
-      headers : {
-        'authorization' : `Bearer ${refreshToken}`
+      headers: {
+        'Content-Type': 'application/json'
       },
       credentials: 'include'
     })
       .then(res => res.json())
-      .then((res) => (res.accessToken) ? dispatch(setLoggedIn(true)) && console.log(res.accessToken) && navigate('/home') : dispatch(setLoggedIn(false)) && setLoading(false)) && navigate('/', { replace : true })
+      .then((res) => (res.accessToken) ? dispatch(setLoggedIn(true)) && console.log(res.accessToken) && navigate('/home') : dispatch(setLoggedIn(false)) && setLoading(false)) && navigate('/', { replace: true })
   }, [loading])
-  
+ */
+
+  console.log(isLoggedIn, " from testing..")
+  if(isLoggedIn === true) {
+    navigate('/home', {replace : true});
+  }
+
 
   console.log(token)
 

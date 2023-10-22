@@ -29,7 +29,6 @@ const Profile = () => {
         const req = await fetch("https://instagram-cx9j.onrender.com/token", {
             headers: {
                 'Content-Type': 'application/json',
-                'auhtorization': `Bearer ${refreshToken}`
             },
             credentials: 'include'
         })
@@ -47,7 +46,6 @@ const Profile = () => {
     const fetchUserInfo = async () => {
         const tokenReq = await fetch("https://instagram-cx9j.onrender.com/token", {
             headers: {
-                'authorization' : `Bearer ${refreshToken}`,
                 'Content-Type': 'application/json'
             },
             credentials: 'include'
@@ -83,7 +81,6 @@ const Profile = () => {
         fetch("https://instagram-cx9j.onrender.com/token", {
             headers: {
                 'Content-Type': 'application/json',
-                'authorization': `Bearer ${refreshToken}`
             },
             credentials: 'include'
         })

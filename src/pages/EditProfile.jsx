@@ -21,7 +21,6 @@ const EditProfile = () => {
     useEffect(() => {
         fetch("https://instagram-cx9j.onrender.com/token", {
             headers: {
-                'authorization': `Bearer ${refreshToken}`,
                 'Content-Type': 'application/json',
             },
             credentials: 'include'

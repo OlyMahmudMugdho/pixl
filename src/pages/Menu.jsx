@@ -20,8 +20,12 @@ const Menu = () => {
                 loginState.refreshToken = " "
                 loginState.status = " "
                 loginState.username = " "
-                localStorage.setItem('loginState', JSON.stringify(loginState))
-                navigate('/')
+                localStorage.setItem('loginState', JSON.stringify(loginState));
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('loginState');
+                localStorage.removeItem('userID');
+                localStorage.clear();
+                navigate('/');
             })
 
     }

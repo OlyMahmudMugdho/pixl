@@ -24,8 +24,8 @@ const Contents = () => {
 
     const fetchToken = async () => {
         const data = await fetch("https://instagram-cx9j.onrender.com/token", {
-            headers : {
-                'authorization' : `Bearer ${refreshToken}`
+            headers: {
+                'Content-Type' : 'application/json'
             },
             credentials: "include"
         })
@@ -57,9 +57,10 @@ const Contents = () => {
         if(await res.end) {
             console.log("end")
             setLoaded(true);
-            return
+            return 
         }
         if (await res.data) {
+            console.log(await res.data)
             setStatus([...status, ...res.data])
             setLoaded(true)
         }
@@ -93,26 +94,7 @@ const Contents = () => {
         window.addEventListener("scroll", fetchAdditional);
         return () => window.removeEventListener("scroll", fetchAdditional);
     }, []);
-    /*  
-     useEffect(() => {
-         
-         const fetchAdditional = () => {
-             setPage(prev => prev + 1)
-     
-             fetch(`https://instagram-cx9j.onrender.com/posts/${page}`, {
-                 headers: {
-                     "authorization": `Bearer ${token}`,
-                     "Content-Type": "application/json"
-                 },
-                 credentials: 'include'
-             })
-                 .then(res => res.json())
-                 .then(data => console.log(data.data))
-                 .then(fetchAdditional)
-                 .then(() => setFetching(false))
-         }
-         fetchAdditional()
-     }, []) */
+  
 
      console.log(token)
 
