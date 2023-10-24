@@ -53,7 +53,7 @@ const MyPosts = () => {
         <div>
             {loading ? <Loading /> :
                 <div className="px-5">
-                    {myPosts.map((item, i) =>
+                    { (myPosts) ? myPosts.map((item, i) =>
                         <Post
                             key={i}
                             item={item}
@@ -65,6 +65,7 @@ const MyPosts = () => {
                             menuIsOpen={menuIsOpen} 
                             setMenuIsOpen={setMenuIsOpen}
                             />
+                            : null
                     )}
                 </div>
             }
