@@ -26,7 +26,7 @@ const Search = () => {
 
     const [notFoundClassName,setNotFoundClassName] = useState("hidden py-10");
 
-    const [clearButtonClass,setClearButtonClass] = useState("absolute right-48 hidden");
+    const [clearButtonClass,setClearButtonClass] = useState("absolute hidden lg:flex text-red lg:right-48 hidden");
 
 
     const searchField = useRef(null);
@@ -154,9 +154,9 @@ const Search = () => {
                         ref={searchField}
                     />
                     <button onClick={clearQuery} className={clearButtonClass}>
-                        <FontAwesomeIcon icon={faX} />
+                        <FontAwesomeIcon className="hidden lg:flex" icon={faX} />
                     </button>
-                    <button className="flex justify-center items-center">
+                    <button className="flex justify-center items-center text-right">
                         <FontAwesomeIcon icon={faMagnifyingGlass} className="text-xl text-zinc-600  h-6 py-1 px-2" />
                     </button>
                 </form>

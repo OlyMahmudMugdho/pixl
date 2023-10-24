@@ -24,9 +24,9 @@ const Contents = () => {
 
     const fetchToken = async () => {
         const data = await fetch("https://instagram-cx9j.onrender.com/token", {
-            headers : {
-                'authorization' : `Bearer ${refreshToken}`,
-                'Content-Type' : 'application/json'
+            headers: {
+                'authorization': `Bearer ${refreshToken}`,
+                'Content-Type': 'application/json'
             },
             credentials: "include"
         })
@@ -109,6 +109,13 @@ const Contents = () => {
         })
         const res = await req.json();
         console.log(await res.data)
+
+        if(await res.end) {
+            console.log("end")
+            setLoaded(true);
+            return 
+        }
+
         if (await res.data) {
             setStatus([...status, ...res.data])
             setLoaded(true)
@@ -132,11 +139,11 @@ const Contents = () => {
 
     useEffect(() => {
         fetchToken();
-    }, [ ])
+    }, [])
 
     useEffect(() => {
         fetchStatus();
-    }, [token,page])
+    }, [token, page])
 
     useEffect(() => {
         window.addEventListener("scroll", fetchAdditional);
@@ -167,10 +174,10 @@ const Contents = () => {
         <div className="flex flex-col justify-center items-center w-full py-8">
             {(!loaded ? <Loading /> :
                 <div>
-                    {(status.length === 0) ? <h1 className="text-xl font-medium">Follow other users to see posts</h1> :status.map((item, i) => (item) ?
-                        <Post key={i} item={item} avatar={avatar} token={token} i={i} buttonClass={"text-2xl hidden"}  />
+                    {(status.length !== 0) ? status.map((item, i) => (item) ?
+                        <Post key={i} item={item} avatar={avatar} token={token} i={i} />
                         : null
-                    )}
+                    ) : <h1 className="text-2xl md:text-3xl py-20">Add friends to see posts</h1>}
                 </div>
             )}
 
