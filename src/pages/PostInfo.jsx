@@ -102,7 +102,8 @@ const PostInfo = () => {
               setLikeNum(data.data.likes);
               setImageUrl([...data.data.imageUrl]);
               setDate(data.data.date);
-              setCommentsNum(data.data.comments)
+              setCommentsNum(data.data.comments);
+              setAuthor(data.data.author)
               console.log(data.data.likes)
               console.log([...data.data.imageUrl]);
               setLoading(false);
@@ -255,14 +256,14 @@ const PostInfo = () => {
               )}
             </div>
 
-            <button
+{/*             <button
               className="bg-blue-500 text-white px-4 py-2 rounded"
               onClick={openModal}
             >
               Open Modal
             </button>
 
-            <Modal isOpen={isModalOpen} onClose={closeModal} />
+            <Modal isOpen={isModalOpen} onClose={closeModal} /> */}
 
 
           </div>

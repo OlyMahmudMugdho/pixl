@@ -8,7 +8,7 @@ const Slider = ({ images }) => {
     return (
         <Carousel className='w-full' showArrows={true} showThumbs={false} showIndicators={showDots} showStatus={showDots}>
             {images.map((image, index) => (
-                <img src={image} key={index} alt="" className="w-full h-96 object-cover " style={{ height: "500px" }} /> 
+                <img src={image} key={index} alt="" className="w-full h-96 object-cover "  /> 
             ))}
         </Carousel>
     )

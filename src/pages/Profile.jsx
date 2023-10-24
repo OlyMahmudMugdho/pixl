@@ -141,7 +141,7 @@ const Profile = () => {
                     <h1 className="text-3xl text-blue-500 font-bold font-bold border-b-2 mb-5 border-blue-400 border-dashed ">
                         My Posts
                     </h1>
-                    <div className="pb-8  lg:w-7/12 ">
+                    <div className="pb-8  lg:w-8/12 ">
                         <MyPosts />
                     </div>
                     <hr />
