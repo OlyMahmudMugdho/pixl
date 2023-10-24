@@ -65,8 +65,8 @@ const MyPosts = () => {
                             menuIsOpen={menuIsOpen} 
                             setMenuIsOpen={setMenuIsOpen}
                             />
-                            : null
-                    )}
+                            
+                    )  : null  }
                 </div>
             }
         </div>
