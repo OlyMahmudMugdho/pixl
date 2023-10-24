@@ -167,7 +167,7 @@ const Contents = () => {
         <div className="flex flex-col justify-center items-center w-full py-8">
             {(!loaded ? <Loading /> :
                 <div>
-                    {status.map((item, i) => (item) ?
+                    {(status.length === 0) ? <h1 className="text-xl font-medium">Follow other users to see posts</h1> :status.map((item, i) => (item) ?
                         <Post key={i} item={item} avatar={avatar} token={token} i={i} buttonClass={"text-2xl hidden"}  />
                         : null
                     )}

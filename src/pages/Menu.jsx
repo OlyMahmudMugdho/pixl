@@ -19,6 +19,7 @@ const Menu = () => {
         loginState.status = " "
         loginState.username = " "
         localStorage.setItem('loginState', JSON.stringify(loginState))
+        localStorage.clear()
         navigate('/')
     }
 

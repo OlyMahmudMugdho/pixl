@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react';
 import avatar from '../../../assets/avatar.png';
 import { Link } from 'react-router-dom';
+import ChangeProfilePicture from '../../layout/ChangeProfilePicture';
 
 const Info = (props) => {
 
-
+    const [isOpen,setIsOpen] = useState(false);
     const userInfo = props.userInfo;
     console.log(userInfo)
 
     
-
+    const open = () => setIsOpen(true)
+    const close = () => setIsOpen(false)
 
     const editProfile = () => { return 0 }
 
@@ -17,7 +19,7 @@ const Info = (props) => {
     return (
         <div className=" flex flex-col  justify-center items-center w-full lg:py-10 px-1 text-left py-4">
             <div className='flex flex-row w-full px-2 justify-between items-center lg:gap-10'>
-                <div className="flex justify-center items-center w-1/3 lg:mr-10 ">
+                <div onClick={open} className="flex justify-center items-center w-1/3 lg:mr-10 ">
                     {(userInfo.profilePicture) ? <img src={userInfo.profilePicture} alt="profile picture" className='rounded-full md:w-36 lg:w-44' /> :
                         <img src={avatar} alt="profile picture" className='rounded-full md:w-36 lg:w-44' />}
                 </div>
@@ -38,6 +40,7 @@ const Info = (props) => {
                         </div>
                     </div>
                 </div>
+                <ChangeProfilePicture isOpen={isOpen} close={close} />
 
             </div>
             <div className='flex flex-col items-start w-full pt-8 gap-4 px-5 lg:hidden'>

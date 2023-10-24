@@ -15,11 +15,11 @@ const Profile = () => {
     const [token, setToken] = useState(null);
     const [tokenGot, setTokenGot] = useState(false);
 
-    const [isOpen,setIsOpen] = useState(false);
+    
     const refreshToken = JSON.parse(localStorage.getItem('refreshToken'));
 
-    const open = () => setIsOpen(true)
-    const close = () => setIsOpen(false)
+    
+    
 
     let accessToken;
 
@@ -133,10 +133,10 @@ const Profile = () => {
         <div className="relative lg:w-full lg:flex lg:justify-center ">
             <div className="lg:absolute lg:left-18 lg:top-5 lg:pl-40 ">
                 {(loading) ? <Loading className="lg:left-1/2" /> : <Info userInfo={userInfo} token={token} />}
-                <button onClick={open} className="bg-blue-500 px-4 py-2 text-white font-bold">
+               {/*  <button onClick={open} className="bg-blue-500 px-4 py-2 text-white font-bold">
                     Change
-                </button>
-                <ChangeProfilePicture isOpen={isOpen} close={close} />
+                </button> */}
+                
                 <div className="flex flex-col justify-center items-center py-2 w-full">
                     <h1 className="text-3xl text-blue-500 font-bold font-bold border-b-2 mb-5 border-blue-400 border-dashed ">
                         My Posts
