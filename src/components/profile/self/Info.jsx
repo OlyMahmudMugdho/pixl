@@ -8,14 +8,15 @@ const Info = (props) => {
     const userInfo = props.userInfo;
     console.log(userInfo)
 
+    
 
 
     const editProfile = () => { return 0 }
 
 
     return (
-        <div className="lg:ml-32 flex flex-col  justify-center items-center w-full lg:py-10 px-1 lg:px-20 text-left py-4">
-            <div className='flex flex-row w-full px-2 justify-between items-center lg:gap-8'>
+        <div className=" flex flex-col  justify-center items-center w-full lg:py-10 px-1 text-left py-4">
+            <div className='flex flex-row w-full px-2 justify-between items-center lg:gap-10'>
                 <div className="flex justify-center items-center w-1/3 lg:mr-10 ">
                     {(userInfo.profilePicture) ? <img src={userInfo.profilePicture} alt="profile picture" className='rounded-full md:w-36 lg:w-44' /> :
                         <img src={avatar} alt="profile picture" className='rounded-full md:w-36 lg:w-44' />}

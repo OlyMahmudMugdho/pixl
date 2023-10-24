@@ -3,7 +3,8 @@
 const like = (userID, postID) => {
     let acccessToken;
     fetch("https://instagram-cx9j.onrender.com/token", {
-        headers: {
+        headers : {
+            'authorization' : `Bearer ${refreshToken}`,
             'Content-Type' : 'application/json'
         },
         credentials: 'include'

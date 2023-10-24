@@ -10,24 +10,16 @@ const Menu = () => {
 
     const logOut = async () => {
         const data = await fetch("https://instagram-cx9j.onrender.com/logout", {
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            credentials: 'include'
         })
-            .then(() => {
-                const loginState = JSON.parse(localStorage.getItem('loginState'));
-                loginState.isLoggedIn = false;
-                loginState.refreshToken = " "
-                loginState.status = " "
-                loginState.username = " "
-                localStorage.setItem('loginState', JSON.stringify(loginState));
-                localStorage.removeItem('isLoggedIn');
-                localStorage.removeItem('loginState');
-                localStorage.removeItem('userID');
-                localStorage.clear();
-                navigate('/');
-            })
 
+        const loginState = JSON.parse(localStorage.getItem('loginState'));
+        loginState.isLoggedIn = false;
+        loginState.refreshToken = " "
+        loginState.status = " "
+        loginState.username = " "
+        localStorage.setItem('loginState', JSON.stringify(loginState))
+        navigate('/')
     }
 
     return (
@@ -42,11 +34,11 @@ const Menu = () => {
             </div>
 
             <div className="flex flex-row gap-4 justify-center items-center cursor-pointer">
-                <FontAwesomeIcon icon={faMagnifyingGlass} />
-                <span className="hidden lg:inline-block">Search</span>
+                <Link to={'/search'}><FontAwesomeIcon icon={faMagnifyingGlass} /></Link>
+                <Link to={'/search'} className="hidden lg:inline-block">Search</Link>
             </div>
             <div className="flex flex-row gap-4 justify-center items-center cursor-pointer">
-                <Link to={'/profile'}><FontAwesomeIcon icon={faUser} /></Link>
+                <Link to={'/profile'}><FontAwesomeIcon icon={faUser}  /></Link>
                 <Link to={'/profile'} className="hidden lg:inline-block">Profile</Link>
             </div>
             <div className="flex flex-row gap-4 justify-center items-center cursor-pointer" onClick={logOut}>

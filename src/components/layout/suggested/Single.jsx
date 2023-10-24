@@ -5,16 +5,15 @@ import SmallLoader from "../SmallLoader";
 
 const Single = (props) => {
     const name = props.name;
+    const username = props.username;
     const accessToken = props.accessToken;
     const userID = props.userID;
     const [followed, setFollowed] = useState(false);
-    const blue = "bg-blue-400  rounded text-white font-bold px-2 py-2 w-36 text-center ";
-    const red = "bg-red-400 rounded text-white font-bold px-2 py-2 w-36  text-center ";
+    const blue = "bg-blue-400  rounded text-white font-bold py-1  w-24 lg:w-32 text-center ";
+    const red = "bg-red-400 rounded text-white font-bold py-1  w-24 lg:w-32 text-center ";
 
     const [profilePic, setProfilePic] = useState(null);
     const [loading, setLoading] = useState(true);
-
-    console.log('on single')
 
 
     const fetchImg = () => {
@@ -66,17 +65,51 @@ const Single = (props) => {
     }
 
     return (
-        <div className="flex flex-row items-center justify-center flex-wrap w-full mb-4 border border-gray-200 py-6 px-4 gap-4">
-            <div className="text-left w-3/4 text-lg text-gray-700 mr-5 flex justify-start items-center">
-                {fetchImg()}
-                {(loading === false && profilePic !== null) ? <img src={profilePic} alt="img" className="w-5 lg:w-10  rounded-full mx-2" /> : (loading && profilePic === null) ? <SmallLoader /> : <img src={avatar} className="w-5 lg:w-10  rounded-full mx-2" />}
-                <a href="/home" className="mr-2"> {name}</a>
+        <div className="w-11/12">
+            <div className=" hidden lg:flex lg:flex-row lg:items-center lg:justify-center lg:w-full lg:mb-4 lg:border lg:border-gray-200 lg:py-6 lg:px-4 lg:gap-4">
+                <div className="text-left text-lg text-gray-700  flex justify-start items-center pl-2 ">
+                    {fetchImg()}
+                    {(loading === false && profilePic !== null) ? <img src={profilePic} alt="img" className="w-5 lg:w-20   rounded-full" /> : (loading) ? <SmallLoader /> : <img src={avatar} className="w-5 lg:w-20  rounded-full" />}
+                </div>
+                <div className="mr-5 w-3/4  flex flex-col justify-start items-center gap-4 text-center">
+                    <p className="mr-2 text-xl">
+                        {name} <br/>
+                        <span className="mr-2 text-sm"> @{username}</span>
+                    </p>
+                    <button className={(followed) ? red : blue} onClick={(followed) ? unfollow : follow}>
+                        {(followed) ? <>Unfollow</> : <>Follow</>}
+                    </button>
+                </div>
             </div>
-            <div className="mr-5 w-3/4 text-left flex justify-start items-center">
-                <button className={(followed) ? red : blue} onClick={(followed) ? unfollow : follow}>
-                    {(followed) ? <>Unfollow</> : <>Follow</>}
-                </button>
+
+
+
+
+            <div className=" lg:hidden ml-1 flex flex-row items-center justify-start w-full mt-8 border border-gray-200 py-4">
+                <div className="text-left text-lg text-gray-700 mr-14 flex justify-start items-center pl-2 ">
+                    {(loading) ? <SmallLoader /> : ((!loading) && profilePic) ? <img src={profilePic} className="w-16 rounded-full" /> : <img src={avatar} className="w-16 rounded-full " />}
+                </div>
+                <div className="mr-5 w-1/4 text-left flex flex-col flex-wrap justify-start items-start gap-1">
+                    <a href="/home" className="mr-2"> {name}</a>
+                    <button className={(followed) ? red : blue} onClick={(followed) ? unfollow : follow}>
+                        {(followed) ? <>Unfollow</> : <>Follow</>}
+                    </button>
+                </div>
             </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         </div>
     )
 }

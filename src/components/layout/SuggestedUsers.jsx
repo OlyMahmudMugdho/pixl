@@ -12,7 +12,7 @@ const SuggestedUsers = (props) => {
   const [usernames, setUsernames] = useState([]);
   const [names, setNames] = useState([]);
 
-  console.log('on suggested')
+
 
   useEffect(() => {
     const request = fetch("https://instagram-cx9j.onrender.com/users", {
@@ -23,17 +23,17 @@ const SuggestedUsers = (props) => {
       credentials: 'include'
     })
       .then(res => res.json())
-      .then(data => { setUserIDs(data.data.userIDs); setUsernames(data.data.usernames); setNames(data.data.names); setLoading(false); return data; })
-      .then(() => console.log(userIDs))
-  }, [])
+      .then(data => { setUserIDs(data.data.userIDs); setUsernames(data.data.usernames); setNames(data.data.names); setLoading(false);})
+      .then(() => console.log(names))
+  }, [loading])
 
+  
   return (
     <div className="hidden lg:flex flex-col right-0 border w-1/4 justify-center items-center fixed min-h-full">
       <h1 className="text-3xl font-medium pb-20 text-zinc-600">People you may know</h1>
       {loading ? <Loading /> :
-
-        <div className="flex flex-col gap-1 w-full px-2">
-           {(userIDs.length !== 0) ? names.map((item,id) => <Single key={id} accessToken={accessToken} name={item} userID={userIDs[id]} /> ) : <h1> no users</h1>}
+        <div className="flex flex-col justify-center items-center gap-1 w-full px-2">
+          {names && names.map((item, id) => <Single key={id} accessToken={accessToken} name={item} userID={userIDs[id]} username={usernames[id]} />)}
         </div>
       }
     </div>

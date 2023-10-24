@@ -24,14 +24,15 @@ const Contents = () => {
 
     const fetchToken = async () => {
         const data = await fetch("https://instagram-cx9j.onrender.com/token", {
-            headers: {
+            headers : {
+                'authorization' : `Bearer ${refreshToken}`,
                 'Content-Type' : 'application/json'
             },
             credentials: "include"
         })
 
         const res = await data.json();
-        const accessToken = await res.accessToken;
+        const accessToken = res.accessToken;
 
         if (await accessToken) {
             setToken(await accessToken);
@@ -39,7 +40,61 @@ const Contents = () => {
 
     }
 
+    const fetchInitial = async () => {
+        const initialData = await fetch("https://instagram-cx9j.onrender.com/posts/1", {
+            headers: {
+                "Content-Type": "application/json",
+                "authorization": `Bearer ${token}`
+            },
+            credentials: "include"
+        });
 
+        const response = await initialData.json();
+        const fetchedData = await response.data;
+        setLoaded(true)
+        if (await fetchedData) {
+            setStatus([...await fetchedData]);
+            setInitialStage(false);
+            setLoaded(true)
+        }
+    }
+
+
+    const infiniteFetch = async () => {
+
+        if ((window.innerHeight + document.documentElement.scrollTop + 1) >= document.documentElement.scrollHeight) {
+            let draft = status;
+            let prevPage = page;
+            setPage(prevPage + 1)
+            console.log(page + 1)
+            setLoaded(false)
+            console.log("fetching ", page + 1)
+            const fetched = await fetch(`https://instagram-cx9j.onrender.com/posts/${page}`, {
+                headers: {
+                    'authorization': `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                },
+                credentials: 'include'
+            })
+
+            const res = await fetched.json();
+            const data = await res.data;
+
+            if (await res.data) {
+                console.log(await data, "from 72")
+                let newStatus = [];
+
+                await data.map(item => newStatus.push(item))
+                draft = [...draft, ...newStatus]
+                console.log(draft)
+                setLoaded(true)
+                return
+            }
+
+        }
+
+        setLoaded(true)
+    }
 
 
 
@@ -53,14 +108,8 @@ const Contents = () => {
             credentials: 'include'
         })
         const res = await req.json();
-        console.log(await res)
-        if(await res.end) {
-            console.log("end")
-            setLoaded(true);
-            return 
-        }
+        console.log(await res.data)
         if (await res.data) {
-            console.log(await res.data)
             setStatus([...status, ...res.data])
             setLoaded(true)
         }
@@ -81,10 +130,9 @@ const Contents = () => {
         }
     };
 
-    useEffect(() => { 
-        console.log('fetching...')
-        fetchToken(); 
-    }, [token])
+    useEffect(() => {
+        fetchToken();
+    }, [ ])
 
     useEffect(() => {
         fetchStatus();
@@ -94,18 +142,35 @@ const Contents = () => {
         window.addEventListener("scroll", fetchAdditional);
         return () => window.removeEventListener("scroll", fetchAdditional);
     }, []);
-  
-
-     console.log(token)
+    /*  
+     useEffect(() => {
+         
+         const fetchAdditional = () => {
+             setPage(prev => prev + 1)
+     
+             fetch(`https://instagram-cx9j.onrender.com/posts/${page}`, {
+                 headers: {
+                     "authorization": `Bearer ${token}`,
+                     "Content-Type": "application/json"
+                 },
+                 credentials: 'include'
+             })
+                 .then(res => res.json())
+                 .then(data => console.log(data.data))
+                 .then(fetchAdditional)
+                 .then(() => setFetching(false))
+         }
+         fetchAdditional()
+     }, []) */
 
     return (
-        <div className="flex flex-col justify-center items-center w-full py-5 md:py-8">
+        <div className="flex flex-col justify-center items-center w-full py-8">
             {(!loaded ? <Loading /> :
                 <div>
-                    { (status.length !== 0 ) ? status.map((item, i) => (item) ?
-                        <Post key={i} item={item} avatar={avatar} token={token} i={i} />
+                    {status.map((item, i) => (item) ?
+                        <Post key={i} item={item} avatar={avatar} token={token} i={i} buttonClass={"text-2xl hidden"}  />
                         : null
-                    ) : <h1 className="text-2xl md:text-3xl py-20">Add friends to see posts</h1> }
+                    )}
                 </div>
             )}
 

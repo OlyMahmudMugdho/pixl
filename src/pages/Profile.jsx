@@ -5,7 +5,8 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import Loading from "../components/layout/Loading";
 import { faL } from "@fortawesome/free-solid-svg-icons";
-
+import MyPosts from "../components/content/MyPosts";
+import ChangeProfilePicture from "../components/layout/ChangeProfilePicture";
 
 const Profile = () => {
 
@@ -14,21 +15,24 @@ const Profile = () => {
     const [token, setToken] = useState(null);
     const [tokenGot, setTokenGot] = useState(false);
 
+    const [isOpen,setIsOpen] = useState(false);
+    const refreshToken = JSON.parse(localStorage.getItem('refreshToken'));
+
+    const open = () => setIsOpen(true)
+    const close = () => setIsOpen(false)
 
     let accessToken;
 
     const loginState = JSON.parse(localStorage.getItem('userID'));
     const userID = loginState.userID
 
-    const refreshToken = JSON.parse(localStorage.getItem('refreshToken'));
-    console.log(refreshToken)
 
     console.log(userID)
-
     const fetchAccessToken = async () => {
         const req = await fetch("https://instagram-cx9j.onrender.com/token", {
             headers: {
-                'Content-Type': 'application/json',
+                'authorization' : `Bearer ${refreshToken}`,
+                'Content-Type': 'application/json'
             },
             credentials: 'include'
         })
@@ -46,6 +50,7 @@ const Profile = () => {
     const fetchUserInfo = async () => {
         const tokenReq = await fetch("https://instagram-cx9j.onrender.com/token", {
             headers: {
+                'authorization' : `Bearer ${refreshToken}`,
                 'Content-Type': 'application/json'
             },
             credentials: 'include'
@@ -80,19 +85,17 @@ const Profile = () => {
     useEffect(() => {
         fetch("https://instagram-cx9j.onrender.com/token", {
             headers: {
-                'Content-Type': 'application/json',
+                'authorization' : `Bearer ${refreshToken}`,
+                'Content-Type': 'application/json'
             },
             credentials: 'include'
         })
             .then(res => res.json())
             .then(data => {
-                // Set the token and then proceed with the next fetch
                 setToken(data.accessToken);
 
-                // You can log the token here, and it will be the updated value
                 console.log(data.accessToken);
 
-                // Fetch user info after setting the token
                 return fetch(`https://instagram-cx9j.onrender.com/users/${loginState.userID}`, {
                     headers: {
                         'authorization': `Bearer ${data.accessToken}`,
@@ -104,23 +107,18 @@ const Profile = () => {
             .then(res => res.json())
             .then(data => {
                 // Set user info and log it
-                console.log(data)
                 setUserInfo(data.message.foundUser);
                 console.log(data.message.foundUser);
 
                 // Now, you can update loading state
-                if (data.message.foundUser) {
-                    setLoading(false);
-                }
-
-
+                setLoading(false);
             })
             .catch(error => {
                 // Handle any errors here
                 console.error(error);
-                setLoading(true);
+                setLoading(false);
             });
-    }, [loginState.userID,refreshToken]); // You don't need 'token' as a dependency
+    }, [loginState.userID]); // You don't need 'token' as a dependency
 
 
 
@@ -132,14 +130,25 @@ const Profile = () => {
     return (
 
         /*   className="md:w-2/5 md:ml-1 mx-6 flex flex-col justify-center items-center text-justify  " */
-        <div className="relative">
-            <div className="absolute left-0">
-                <Menu />
-            </div>
-            <div className=" lg:ml-32">
-                {(loading) ? <Loading className="lg:left-1/2 ml" /> : <Info userInfo={userInfo} token={token} />}
+        <div className="relative lg:w-full lg:flex lg:justify-center ">
+            <div className="lg:absolute lg:left-18 lg:top-5 lg:pl-40 ">
+                {(loading) ? <Loading className="lg:left-1/2" /> : <Info userInfo={userInfo} token={token} />}
+                <button onClick={open} className="bg-blue-500 px-4 py-2 text-white font-bold">
+                    Change
+                </button>
+                <ChangeProfilePicture isOpen={isOpen} close={close} />
+                <div className="flex flex-col justify-center items-center py-2 w-full">
+                    <h1 className="text-3xl text-blue-500 font-bold font-bold border-b-2 mb-5 border-blue-400 border-dashed ">
+                        My Posts
+                    </h1>
+                    <div className="pb-8  lg:w-7/12 ">
+                        <MyPosts />
+                    </div>
+                    <hr />
+                </div>
 
             </div>
+            <Menu />
         </div>
 
     )

@@ -2,8 +2,6 @@ import { useState } from "react"
 import { useDispatch } from "react-redux";
 import { setLoggedInUsername, setLoggedInUserID, setLoggedIn, setStatus, setRefreshToken } from "./LoginSlice";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 
 const LoginForm = () => {
@@ -17,22 +15,10 @@ const LoginForm = () => {
   const [loginSucess, setLoginSuccess] = useState(false);
 
 
-  let notify;
-
-  toast.success('🦄 Wow so easy!', {
-    position: "top-right",
-    autoClose: 3000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-  });
-
-
 
   const navigate = useNavigate();
+
+  const refreshToken = JSON.parse(localStorage.getItem('refreshToken'));
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -96,23 +82,12 @@ const LoginForm = () => {
     console.log(await userID);
 
     if (await refreshToken && await message) {
-      localStorage.setItem("isLoggedIn", JSON.stringify(true));
+      localStorage.setItem("refreshToken", JSON.stringify(await refreshToken))
       setLoginSuccess(true);
       console.log(message);
 
 
-      notify = <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
+
 
 
       status = true;
@@ -138,6 +113,7 @@ const LoginForm = () => {
 
     const accessToken = fetch("https://instagram-cx9j.onrender.com/token", {
       headers: {
+        'authorization' : `Bearer ${refreshToken}`,
         "Content-Type": "application/json",
       },
       credentials: 'include'
@@ -166,7 +142,7 @@ const LoginForm = () => {
         />
         {(errorType === "password") ? <span className="text-red-700 font-bold">{errorMessage}</span> : null}
         <button className={buttonClass} disabled={buttonDisabled} >Log in</button>
-        {notify}
+
       </form>
     </div>
   )

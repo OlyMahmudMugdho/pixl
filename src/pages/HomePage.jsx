@@ -15,50 +15,37 @@ const HomePage = () => {
   const [accessToken, setAcessToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const refreshToken = JSON.parse(localStorage.getItem('refreshToken'));
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
     const doFetch = async () => {
-      const data = await fetch("https://instagram-cx9j.onrender.com/token", {
-        headers : {
-          'Content-Type' : 'application/json'
-        },
-        credentials : 'include'
-      }
-      );
+      let data = await fetchAccessToken("https://instagram-cx9j.onrender.com/token");
+      console.log(await data)
 
-
-      // console.log(await data.json())
-
-      const res = await data.json()
-
-      if (await res.accessToken) {
-        console.log('found')
-        setAcessToken(res.accessToken)
+      if (await data.accessToken) {
+        setAcessToken(data.accessToken)
         setLoading(false)
         dispatch(setLoggedIn(true));
         return
       }
 
-      if (await res?.error) {
+      if (await data?.error) {
         dispatch(setLoggedIn(false));
-        console.log("error occurred in  Homepage");
+        console.log("error occurred");
         navigate('/')
         return;
       }
     };
 
     doFetch();
-    
   }, []);
 
   const isLoggedIn = JSON.parse(localStorage.getItem('loginState')).isLoggedIn;
   console.log(isLoggedIn)
 
   return (
-    <div className="relative min-h-full md:min-h-screen w-full flex flex-col items-center md:gap-9">
+    <div className="relative min-h-screen w-full flex flex-col items-center gap-9">
 
       {/* {(isLoggedIn) ? <CreatePost /> : <Navigate to={"/"} />} */}
 

@@ -15,13 +15,13 @@ const EditProfile = () => {
     const [token, setToken] = useState(null);
 
     const refreshToken = JSON.parse(localStorage.getItem('refreshToken'));
-    console.log(refreshToken)
 
 
     useEffect(() => {
         fetch("https://instagram-cx9j.onrender.com/token", {
             headers: {
-                'Content-Type': 'application/json',
+                'authorization' : `Bearer ${refreshToken}`,
+                'Content-Type': 'application/json'
             },
             credentials: 'include'
         })
@@ -40,7 +40,7 @@ const EditProfile = () => {
             .then(res => res.json())
             .then(data => { setName(data.message.foundUser.name); setEmail(data.message.foundUser.email); (data.success) ? setFinished(true) : setFinished(null) })
             .then(() => setLoading(false))
-    }, [refreshToken])
+    }, [])
 
     const editProfile = (event) => {
         event.preventDefault();
