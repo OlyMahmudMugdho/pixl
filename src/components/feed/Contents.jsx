@@ -100,26 +100,38 @@ const Contents = () => {
 
     const fetchStatus = async () => {
 
-        const req = await fetch(`https://instagram-cx9j.onrender.com/posts/${page}`, {
+        fetch('https://instagram-cx9j.onrender.com/token', {
             headers: {
-                "authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
+                'authorization': `Bearer ${refreshToken}`,
+                'Content-Type': 'application/json'
             },
             credentials: 'include'
         })
-        const res = await req.json();
-        console.log(await res.data)
+            .then(res => res.json())
+            .then(async (data) => {
 
-        if(await res.end) {
-            console.log("end")
-            setLoaded(true);
-            return 
-        }
+                const req = await fetch(`https://instagram-cx9j.onrender.com/posts/${page}/experimental`, {
+                    headers: {
+                        "authorization": `Bearer ${data.accessToken}`,
+                        "Content-Type": "application/json"
+                    },
+                    credentials: 'include'
+                })
+                const res = await req.json();
+                console.log(await res.data)
 
-        if (await res.data) {
-            setStatus([...status, ...res.data])
-            setLoaded(true)
-        }
+                if (await res.end) {
+                    console.log("end")
+                    setLoaded(true);
+                    return
+                }
+
+                if (await res.data) {
+                    setStatus([...status, ...res.data])
+                    setLoaded(true)
+                }
+            })
+
 
     }
 
