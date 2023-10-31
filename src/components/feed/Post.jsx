@@ -149,7 +149,7 @@ const Post = (props) => {
                     <button onClick={deletePost} className="py-1 px-8  text-white font-bold bg-red-400 border rounded-md">Delete</button>
                 </div>
             </div>
-            <div className="flex gap-2 flex-row justify-start items-center w-full">
+            <div className="flex gap-2 flex-col justify-start items-center w-full">
                 <div>
                     {(item.profilePic) ? <img src={item.profilePic} /> : <img src={avatar} className="w-5 md:w-8 h-1/4 rounded-full mx-2" />}
                 </div>
