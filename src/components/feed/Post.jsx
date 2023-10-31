@@ -139,8 +139,8 @@ const Post = (props) => {
     }
 
     return (
-        <div className="w-full h-auto flex flex-col items-center border border-gray-200  mb-5">
-            <div className="w-full flex items-end justify-end  px-2 relative">
+        <div className="relative w-full h-auto flex flex-col items-center border border-gray-200  mb-5 py-1">
+            <div className="w-full flex items-end justify-end  px-2 absolute">
                 <button onClick={toggleMenu}>
                     <FontAwesomeIcon icon={faEllipsis} className={buttonClass} />
                 </button>
@@ -150,18 +150,21 @@ const Post = (props) => {
                 </div>
             </div>
             <div className="flex gap-2 flex-row justify-start items-center w-full">
-                <div>
-                    {(item.profilePic) ? <img src={item.profilePic} /> : <img src={avatar} className="w-5 md:w-8 h-1/4 rounded-full mx-2" />}
-                </div>
-                <p className="text-left text-sm text-zinc-700 w-full flex flex-col items-center py-3 px-2">
-                    <span>
-                        {item.author}
-                    </span>
+                <div className="flex flex-col">
+                  
+                        <p className="flex items-center">
+                            {(item.profilePic) ? <img src={item.profilePic} /> : <img src={avatar} className="w-5 md:w-8 h-1/4 rounded-full mx-2" />}
+                            <span>
+                                {item.author}
+                            </span>
+                        </p>
+                    <p className="text-left text-sm text-zinc-700 w-full flex flex-col py-3 px-2">
 
-                    <span>
-                        {extractDay(item.date)} {extractMonth(item.date)}, {extractYear(item.date)}
-                    </span>
-                </p>
+                        <span>
+                            {extractDay(item.date)} {extractMonth(item.date)}, {extractYear(item.date)}
+                        </span>
+                    </p>
+                </div>
             </div>
             <h1 onClick={navigateToPostInfo} className="text-left w-full flex items-center py-3 px-2">{item.content}</h1>
 
