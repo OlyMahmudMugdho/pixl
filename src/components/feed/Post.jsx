@@ -106,9 +106,29 @@ const Post = (props) => {
         return year;
     }
 
+    const getMonthName = (monthNumber) => {
+        const monthNames = [
+          'January', 'February', 'March', 'April', 'May', 'June',
+          'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+      
+        // Ensure the monthNumber is within a valid range (1-12)
+        if (monthNumber >= 1 && monthNumber <= 12) {
+          return monthNames[monthNumber - 1];
+        } else {
+          return 'Invalid month number';
+        }
+      };
+      
+      // Example usage:
+      const monthNumber = 10;
+      const monthName = getMonthName(monthNumber);
+      console.log(monthName); // Output: "October"
+      
+
     function extractMonth(dateString) {
         const date = new Date(dateString);
-        const month = date.getMonth() + 1;
+        const month = getMonthName(date.getMonth() + 1);
         return month;
     }
 
