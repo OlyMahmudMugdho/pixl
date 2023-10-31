@@ -59,7 +59,7 @@ const Post = (props) => {
         event.preventDefault();
         fetch('https://instagram-cx9j.onrender.com/token', {
             headers: {
-                'authorization' : `Bearer ${refreshToken}`,
+                'authorization': `Bearer ${refreshToken}`,
                 'Content-Type': 'application/json'
             },
             credentials: 'include'
@@ -86,14 +86,14 @@ const Post = (props) => {
             })
     }
 
-/*     useEffect(() => {
-        window.addEventListener("click", function(event) {
-            event.preventDefault();
-            if(menuOpen) {
-                hideMenu()
-            }
-        })
-    },[menuOpen]) */
+    /*     useEffect(() => {
+            window.addEventListener("click", function(event) {
+                event.preventDefault();
+                if(menuOpen) {
+                    hideMenu()
+                }
+            })
+        },[menuOpen]) */
 
     const navigateToPostInfo = (event) => {
         event.preventDefault();
@@ -108,23 +108,23 @@ const Post = (props) => {
 
     const getMonthName = (monthNumber) => {
         const monthNames = [
-          'January', 'February', 'March', 'April', 'May', 'June',
-          'July', 'August', 'September', 'October', 'November', 'December'
+            'January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
         ];
-      
+
         // Ensure the monthNumber is within a valid range (1-12)
         if (monthNumber >= 1 && monthNumber <= 12) {
-          return monthNames[monthNumber - 1];
+            return monthNames[monthNumber - 1];
         } else {
-          return 'Invalid month number';
+            return 'Invalid month number';
         }
-      };
-      
-      // Example usage:
-      const monthNumber = 10;
-      const monthName = getMonthName(monthNumber);
-      console.log(monthName); // Output: "October"
-      
+    };
+
+    // Example usage:
+    const monthNumber = 10;
+    const monthName = getMonthName(monthNumber);
+    console.log(monthName); // Output: "October"
+
 
     function extractMonth(dateString) {
         const date = new Date(dateString);
@@ -149,11 +149,19 @@ const Post = (props) => {
                     <button onClick={deletePost} className="py-1 px-8  text-white font-bold bg-red-400 border rounded-md">Delete</button>
                 </div>
             </div>
-            <div className="flex gap-2 flex-col justify-start items-center w-full">
+            <div className="flex gap-2 flex-row justify-start items-center w-full">
                 <div>
                     {(item.profilePic) ? <img src={item.profilePic} /> : <img src={avatar} className="w-5 md:w-8 h-1/4 rounded-full mx-2" />}
                 </div>
-                <p className="text-left text-sm text-zinc-700 w-full flex items-center py-3 px-2">{item.author}   |   {extractDay(item.date)}-{extractMonth(item.date)}-{extractYear(item.date)}  </p>
+                <p className="text-left text-sm text-zinc-700 w-full flex flex-col items-center py-3 px-2">
+                    <span>
+                        {item.author}
+                    </span>
+
+                    <span>
+                        {extractDay(item.date)} {extractMonth(item.date)}, {extractYear(item.date)}
+                    </span>
+                </p>
             </div>
             <h1 onClick={navigateToPostInfo} className="text-left w-full flex items-center py-3 px-2">{item.content}</h1>
 
