@@ -185,7 +185,7 @@ const Contents = () => {
     return (
         <div className="flex flex-col justify-center items-center w-full py-8">
             {(!loaded ? <Loading /> :
-                <div>
+                <div className="w-full">
                     {(status.length !== 0) ? status.map((item, i) => (item) ?
                         <Post key={i} item={item} avatar={avatar} token={token} i={i} />
                         : null
