@@ -28,7 +28,7 @@ const PostInfo = () => {
   const [newComment, setNewComment] = useState("");
   const [commentsAdded, setCommentsAdded] = useState(0);
   const [commentsNum, setCommentsNum] = useState(null);
-
+  const [commentLoading, setCommentLoading] = useState(false);
 
 
 
@@ -45,7 +45,7 @@ const PostInfo = () => {
   const fetchUserInfo = () => {
     fetch('https://instagram-cx9j.onrender.com/token', {
       headers: {
-        'authorization' : `Bearer ${refreshToken}`,
+        'authorization': `Bearer ${refreshToken}`,
         'Content-Type': 'application/json'
       },
       credentials: 'include'
@@ -75,7 +75,7 @@ const PostInfo = () => {
     setLoading(true);
     fetch('https://instagram-cx9j.onrender.com/token', {
       headers: {
-        'authorization' : `Bearer ${refreshToken}`,
+        'authorization': `Bearer ${refreshToken}`,
         'Content-Type': 'application/json'
       },
       credentials: 'include'
@@ -117,10 +117,11 @@ const PostInfo = () => {
 
 
   useEffect(() => {
-    setLoading(true);
+    //setLoading(true);
+    setCommentLoading(true);
     fetch('https://instagram-cx9j.onrender.com/token', {
       headers: {
-        'authorization' : `Bearer ${refreshToken}`,
+        'authorization': `Bearer ${refreshToken}`,
         'Content-Type': 'application/json'
       },
       credentials: 'include'
@@ -140,7 +141,8 @@ const PostInfo = () => {
           .then(data => {
             console.log(data.data);
             setComments([...data.data]);
-            setLoading(false);
+            //setLoading(false);
+            setCommentLoading(false);
           })
       })
 
@@ -156,7 +158,7 @@ const PostInfo = () => {
     event.preventDefault();
     fetch('https://instagram-cx9j.onrender.com/token', {
       headers: {
-        'authorization' : `Bearer ${refreshToken}`,
+        'authorization': `Bearer ${refreshToken}`,
         'Content-Type': 'application/json'
       },
       credentials: 'include'
@@ -184,6 +186,21 @@ const PostInfo = () => {
       })
   }
 
+
+  const getMonthName = (monthNumber) => {
+    const monthNames = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+
+    // Ensure the monthNumber is within a valid range (1-12)
+    if (monthNumber >= 1 && monthNumber <= 12) {
+      return monthNames[monthNumber - 1];
+    } else {
+      return 'Invalid month number';
+    }
+  };
+
   function extractYear(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -192,7 +209,7 @@ const PostInfo = () => {
 
   function extractMonth(dateString) {
     const date = new Date(dateString);
-    const month = date.getMonth() + 1;
+    const month = getMonthName(date.getMonth() + 1);
     return month;
   }
 
@@ -205,58 +222,97 @@ const PostInfo = () => {
   return (
     <div className="relative flex justify-center items-center mt-4 pb-10 lg:mt-5 w-full" >
 
-      {(loading) ? <Loading /> :
-        <div className="w-full flex flex-col justify-center items-center ">
-          <div className="absolute left-0">
-            <Menu />
-          </div>
 
-          <div className="lg:ml-28 w-11/12  lg:w-5/12 border border-solid border-gray-300">
+      <div className="w-full flex flex-col justify-center items-center ">
+        <div className="absolute left-0">
+          <Menu />
+        </div>
+
+        <div className="lg:ml-28 w-11/12  lg:w-5/12 border border-solid border-gray-300">
+
+          {loading ? <Loading /> :
+
             <div className="w-full">
+              <div className="w-full">
 
-              <div className="flex gap-2 flex-row justify-start items-center w-full">
-                <div>
-                  {(profilePic) ? <img src={profilePic} /> : <img src={avatar} className="w-5 md:w-8 h-1/4 rounded-full mx-2" />}
+
+                <div className="flex gap-2 flex-row justify-start items-center w-full">
+                  {/* <div>
+                    {(profilePic) ? <img src={profilePic} /> : <img src={avatar} className="w-5 md:w-8 h-1/4 rounded-full mx-2" />}
+                  </div>
+                  <p className="text-left text-sm text-zinc-700 w-full flex items-center py-3 px-2">{author}   |   {extractDay(date)}-{extractMonth(date)}-{extractYear(date)}  </p>
+
+                  <p className="text-left text-sm text-zinc-700 w-full flex flex-col py-3 px-2">
+
+                    <span>
+                      {extractDay(date)} {extractMonth(date)}, {extractYear(date)}
+                    </span>
+                  </p> */}
+
+
+                  <div className="flex flex-col py-2">
+
+                    <p className="flex items-center">
+                      {(profilePic) ? <img src={profilePic} /> : <img src={avatar} className="w-5 md:w-8 h-1/4 rounded-full mx-2" />}
+                      <span>
+                        {author}
+                      </span>
+                    </p>
+                    <p className="text-left text-sm text-zinc-700 w-full flex flex-col py-3 px-2">
+
+                      <span>
+                        {extractDay(date)} {extractMonth(date)}, {extractYear(date)}
+                      </span>
+                    </p>
+                  </div>
+
+
                 </div>
-                <p className="text-left text-sm text-zinc-700 w-full flex items-center py-3 px-2">{author}   |   {extractDay(date)}-{extractMonth(date)}-{extractYear(date)}  </p>
+
+                <h1 className="px-2">{content}</h1>
+                <Slider images={imageUrl} />
+                <Actions userID={userID} postId={postId} likeNum={likeNum} token={token} commentsNum={commentsNum} />
+              </div>
+              <div className="border border-solid border-gray-300 py-1 px-2 pb-5 lg:pb-1 w-full flex flex-col gap-2">
+                <label htmlFor="commentBox" className="font-bold text-zinc-800 text-xl lg:text-lg">Add a comment</label>
+                <input onChange={(e) => setNewComment(e.target.value)} type="text" name="commentBox" id="commentBox" className="hidden lg:flex  flex-wrap border border-solid border-gray-400 rounded-lg h-14 px-2" />
+
+
+                <div className="lg:hidden w-full flex gap-2">
+                  <input onChange={(e) => setNewComment(e.target.value)} type="text" name="commentBox" id="commentBox" className="border border-solid border-gray-400 w-10/12 rounded-lg h-14 px-2" />
+                  <button onClick={addComment} className="bg-blue-400 w-14 py-1 text-white font-bold border border-solid rounded-lg text-center hover:bg-blue-300 ">
+                    <FontAwesomeIcon
+                      icon={faPaperPlane}
+                      className="text-xl text-center "
+                    />
+                  </button>
+                </div>
+
+                <div className="w-full hidden lg:flex justify-end py-1 ">
+                  <button onClick={addComment} className="bg-blue-400 hover:bg-blue-300 w-32 py-2 text-white font-bold border border-solid rounded-lg">Post Comment</button>
+                </div>
               </div>
 
-              <h1 className="px-2">{content}</h1>
-              <Slider images={imageUrl} />
-              <Actions userID={userID} postId={postId} likeNum={likeNum} token={token} commentsNum={commentsNum} />
-            </div>
-            <div className="border border-solid border-gray-300 py-1 px-2 pb-5 lg:pb-1 w-full flex flex-col gap-2">
-              <label htmlFor="commentBox" className="font-bold text-zinc-800 text-xl lg:text-lg">Add a comment</label>
-              <input onChange={(e) => setNewComment(e.target.value)} type="text" name="commentBox" id="commentBox" className="hidden lg:flex  flex-wrap border border-solid border-gray-400 rounded-lg h-14 px-2" />
+              <div className="w-full px-2 py-5 overflow-y-scroll max-h-56">
+                {commentLoading ? "Loading Comments..." :
 
+                  <>
 
-              <div className="lg:hidden w-full flex gap-2">
-                <input onChange={(e) => setNewComment(e.target.value)} type="text" name="commentBox" id="commentBox" className="border border-solid border-gray-400 w-10/12 rounded-lg h-14 px-2" />
-                <button onClick={addComment} className="bg-blue-400 w-14 py-1 text-white font-bold border border-solid rounded-lg text-center hover:bg-blue-300 ">
-                  <FontAwesomeIcon
-                    icon={faPaperPlane}
-                    className="text-xl text-center "
-                  />
-                </button>
+                    {comments && comments.map(
+                      (item, id) => <Comment
+                        key={id}
+                        comment={item.comment}
+                        commentor={item.commentor}
+                        date={item.date}
+                      />
+                    )}
+                  </>}
               </div>
 
-              <div className="w-full hidden lg:flex justify-end py-1 ">
-                <button onClick={addComment} className="bg-blue-400 hover:bg-blue-300 w-32 py-2 text-white font-bold border border-solid rounded-lg">Post Comment</button>
-              </div>
             </div>
+          }
 
-            <div className="w-full px-2 py-5 overflow-y-scroll max-h-56">
-              {comments && comments.map(
-                (item, id) => <Comment
-                  key={id}
-                  comment={item.comment}
-                  commentor={item.commentor}
-                  date={item.date}
-                />
-              )}
-            </div>
-
-{/*             <button
+          {/*             <button
               className="bg-blue-500 text-white px-4 py-2 rounded"
               onClick={openModal}
             >
@@ -266,11 +322,13 @@ const PostInfo = () => {
             <Modal isOpen={isModalOpen} onClose={closeModal} /> */}
 
 
-          </div>
+        </div>
 
 
 
-        </div>}
+      </div>
+
+
 
     </div>
   )
