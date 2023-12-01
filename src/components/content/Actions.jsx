@@ -118,7 +118,7 @@ const Actions = (props) => {
     }, [liked, likeCount])
 
     return (
-        <div className="flex justify-between items-between gap-2 w-full px-20 py-1" >
+        <div className="w-full flex justify-between items-between gap-2 w-full px-20 py-1" >
             <div className='flex gap-1 items-center justify-center font-bold'>
                 <button onClick={() => (!liked) ? like(userID, postId) && refresh() : unlike(userID, postId) && refresh()} className="text-3xl text-zinc-500"><span className=' text-white'><FontAwesomeIcon icon={(liked) ? icon : icon} className={iconClass} /></span></button>
                 <p>{likeCount}</p>
